@@ -1,10 +1,9 @@
-import { Timestamp } from 'firebase/firestore';
 import { getDateByDefaultFormat } from '../../utils/date/date.service';
 import classes from './styles.module.scss';
 
 interface IProps {
     content: string;
-    date: Timestamp;
+    date: string;
 }
 
 function Comment({ content, date }: IProps): JSX.Element {

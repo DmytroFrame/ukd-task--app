@@ -3,7 +3,6 @@ import Head from 'next/head';
 import type { NextPage } from 'next';
 import classes from '../scss/pages/index.module.scss';
 import { IPatient } from '../src/interfaces/IPatient.interface';
-import { addNewPatient, getPatients, updatePatient } from '../src/services/firebase/firebase.service';
 import { InformationStateType } from '../src/types/general.types';
 import { InformationContext } from '../src/context';
 import InformationLayout from '../src/layouts/InformationLayout';
@@ -13,12 +12,13 @@ import AddPatientField from '../src/components/AddPatientField/Component';
 import PatientsList from '../src/components/PatientsList';
 import PatientMedicalBook from '../src/components/PatientMedicalBook';
 import PatientJournal from '../src/components/PatientJournal';
+import { PatientService } from '../src/services/api/patient.service';
 
 const newPatientDataTemplate = {
-    name: '',
-    surname: '',
-    birthDate: '',
-    gender: '',
+    firstName: '',
+    lastName: '',
+    birthday: '',
+    gender: 'FEMALE',
     country: '',
     state: '',
     address: '',
@@ -26,7 +26,7 @@ const newPatientDataTemplate = {
 };
 
 const editPatientDataTemplate = {
-    birthDate: '',
+    birthday: '',
     gender: '',
     country: '',
     state: '',
@@ -42,14 +42,14 @@ const Home: NextPage = () => {
     const [editPatientTemplate, setEditPatientTemplate] = useState<any>(editPatientDataTemplate);
 
     const fetchPatients = async (): Promise<void> => {
-        const patients: IPatient[] = await getPatients();
+        const patients: IPatient[] = await PatientService.getPatients();
         setPatientsData(patients);
         !selectedPatient && setSelectedPatient(patients[0]);
     };
 
     const filterPatients = (): IPatient[] | undefined =>
         patientsData?.filter((patient: IPatient) => {
-            const fullname = `${patient.name} ${patient.surname}`;
+            const fullname = `${patient.firstName} ${patient.lastName}`;
             return fullname.toLowerCase().includes(searchInput.toLowerCase());
         });
 
@@ -70,7 +70,7 @@ const Home: NextPage = () => {
             comments: [],
         };
 
-        addNewPatient(Object.assign(newPatientData, incapsulatedData));
+        PatientService.createPatient(Object.assign(newPatientData, incapsulatedData));
         fetchPatients();
         setInformationState('ViewPatient');
     };
@@ -81,7 +81,7 @@ const Home: NextPage = () => {
             }
         });
 
-        updatePatient(selectedPatient?.id, selectedPatient!, editPatientTemplate);
+        PatientService.updatePatient(selectedPatient?.id, editPatientTemplate);
         setInformationState('ViewPatient');
         setEditPatientTemplate(editPatientDataTemplate);
         fetchPatients();

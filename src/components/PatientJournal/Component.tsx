@@ -4,8 +4,8 @@ import classes from './styles.module.scss';
 import Comment from '../Comment/Component';
 import { IComment } from '../../interfaces/IPatient.interface';
 import { useContext, useState } from 'react';
-import { updatePatient } from '../../services/firebase/firebase.service';
 import { InformationContext } from '../../context';
+import { PatientService } from '../../services/api/patient.service';
 
 const inputStyles = {
     input: { color: '#fff' },
@@ -28,7 +28,7 @@ function PatientJournal() {
 
             setCommentInput('');
 
-            updatePatient(selectedPatient.id, selectedPatient, upd);
+            PatientService.updatePatient(selectedPatient.id, upd);
             fetchPatients();
         }
     };
@@ -42,9 +42,9 @@ function PatientJournal() {
                         selectedPatient.comments
                             .map((comment: IComment) => (
                                 <Comment
-                                    key={comment.comment + Math.random() * 20}
-                                    content={comment.comment}
-                                    date={comment.date}
+                                    key={comment.id}
+                                    content={comment.text}
+                                    date={comment.createdAt}
                                 />
                             ))
                             .reverse()

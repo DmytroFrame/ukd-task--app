@@ -1,18 +1,17 @@
-import { Timestamp } from 'firebase/firestore';
-
-type Gender = 'male' | 'female';
+type Gender = 'MALE' | 'FEMALE';
 
 export interface IComment {
-    date: Timestamp;
-    comment: string;
+    id: number;
+    text: string;
+    createdAt: string;
 }
 
 export interface IPatient {
-    id?: string;
-    name: string;
-    surname: string;
+    id?: number;
+    firstName: string;
+    lastName: string;
 
-    birthDate: Timestamp;
+    birthday: string;
     gender: Gender;
 
     country: string;
