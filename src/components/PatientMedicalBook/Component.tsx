@@ -7,7 +7,7 @@ import classes from './styles.module.scss';
 
 function PatientMedicalBook(): JSX.Element {
     const [patient, setPatient] = useState<IPatient>();
-    const { selectedPatient } = useContext(InformationContext);
+    const { selectedPatient }: { selectedPatient: IPatient } = useContext(InformationContext);
 
     useEffect(() => {
         setPatient(() => selectedPatient);
@@ -17,7 +17,7 @@ function PatientMedicalBook(): JSX.Element {
         <DetailedInformationLayout>
             <div className={classes['intformation-description']}>
                 <div className={classes['intformation-description__item']}>
-                    Date of birth: {selectedPatient && getDateByDefaultFormat(selectedPatient.birthDate)}
+                    Date of birth: {selectedPatient && getDateByDefaultFormat(selectedPatient.birthday)}
                 </div>
                 <div className={classes['intformation-description__item']}>
                     Sex: {selectedPatient && selectedPatient.gender}

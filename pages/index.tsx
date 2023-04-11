@@ -3,7 +3,6 @@ import Head from 'next/head';
 import type { NextPage } from 'next';
 import classes from '../scss/pages/index.module.scss';
 import { IPatient } from '../src/interfaces/IPatient.interface';
-import { addNewPatient, getPatients, updatePatient } from '../src/services/firebase/firebase.service';
 import { InformationStateType } from '../src/types/general.types';
 import { InformationContext } from '../src/context';
 import InformationLayout from '../src/layouts/InformationLayout';
@@ -13,12 +12,13 @@ import AddPatientField from '../src/components/AddPatientField/Component';
 import PatientsList from '../src/components/PatientsList';
 import PatientMedicalBook from '../src/components/PatientMedicalBook';
 import PatientJournal from '../src/components/PatientJournal';
+import { PatientService } from '../src/services/api/patient.service';
 
 const newPatientDataTemplate = {
-    name: '',
-    surname: '',
-    birthDate: '',
-    gender: '',
+    firstName: '',
+    lastName: '',
+    birthday: '',
+    gender: 'MALE',
     country: '',
     state: '',
     address: '',
@@ -26,8 +26,8 @@ const newPatientDataTemplate = {
 };
 
 const editPatientDataTemplate = {
-    birthDate: '',
-    gender: '',
+    birthday: '',
+    gender: 'MALE',
     country: '',
     state: '',
     address: '',
@@ -42,14 +42,14 @@ const Home: NextPage = () => {
     const [editPatientTemplate, setEditPatientTemplate] = useState<any>(editPatientDataTemplate);
 
     const fetchPatients = async (): Promise<void> => {
-        const patients: IPatient[] = await getPatients();
+        const patients: IPatient[] = await PatientService.getPatients();
         setPatientsData(patients);
         !selectedPatient && setSelectedPatient(patients[0]);
     };
 
     const filterPatients = (): IPatient[] | undefined =>
         patientsData?.filter((patient: IPatient) => {
-            const fullname = `${patient.name} ${patient.surname}`;
+            const fullname = `${patient.firstName} ${patient.lastName}`;
             return fullname.toLowerCase().includes(searchInput.toLowerCase());
         });
 
@@ -70,9 +70,10 @@ const Home: NextPage = () => {
             comments: [],
         };
 
-        addNewPatient(Object.assign(newPatientData, incapsulatedData));
-        fetchPatients();
-        setInformationState('ViewPatient');
+        PatientService.createPatient(Object.assign(newPatientData, incapsulatedData)).then(_ => {
+            fetchPatients();
+            setInformationState('ViewPatient');
+        });
     };
     const onUpdatePatientHandle = (): void => {
         Object.keys(editPatientTemplate).forEach((key) => {
@@ -80,11 +81,11 @@ const Home: NextPage = () => {
                 delete editPatientTemplate[key];
             }
         });
-
-        updatePatient(selectedPatient?.id, selectedPatient!, editPatientTemplate);
-        setInformationState('ViewPatient');
-        setEditPatientTemplate(editPatientDataTemplate);
-        fetchPatients();
+        PatientService.updatePatient(selectedPatient?.id, editPatientTemplate).then(_ => {
+            setInformationState('ViewPatient');
+            setEditPatientTemplate(editPatientDataTemplate);
+            fetchPatients();
+        });
     };
 
     const onSwitchStateToPatientAddHandle = (): void => setInformationState('AddPatient');
@@ -92,7 +93,7 @@ const Home: NextPage = () => {
     return (
         <div className={classes.wrapper}>
             <Head>
-                <title>VITech Med App</title>
+                <title>UKD Task App</title>
             </Head>
 
             <Sidebar

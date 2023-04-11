@@ -4,7 +4,7 @@ export default function Document() {
     return (
         <Html>
             <Head>
-                <meta name="description" content="VITech Test Task" />
+                <meta name="description" content="UKD Test Task" />
 
                 <link
                     rel="stylesheet"

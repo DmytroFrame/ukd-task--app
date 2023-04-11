@@ -5,7 +5,7 @@ import { IPatient } from '../../interfaces/IPatient.interface';
 import { getDateByDefaultFormat } from '../../utils/date/date.service';
 import React from 'react';
 
-function PatientCard({ name, surname, birthDate, gender }: IPatient): JSX.Element {
+function PatientCard({ firstName, lastName, birthday, gender }: IPatient): JSX.Element {
     const iconStyles = {
         fill: '#f4f4f4',
         width: '45px',
@@ -16,12 +16,12 @@ function PatientCard({ name, surname, birthDate, gender }: IPatient): JSX.Elemen
         <div className={classes['patient-card']}>
             <div className={classes['patient-data']}>
                 <div className={classes['patient-data__fullname']}>
-                    {name} {surname}
+                    {firstName} {lastName}
                 </div>
-                <div className={classes['patient-data__birth']}>{`${getDateByDefaultFormat(birthDate)}`}</div>
+                <div className={classes['patient-data__birth']}>{`${getDateByDefaultFormat(birthday)}`}</div>
             </div>
             <div className={classes['patient-card__avatar']}>
-                {gender === 'male' ? <ManIcon sx={iconStyles} /> : <WomanIcon sx={iconStyles} />}
+                {gender === 'MALE' ? <ManIcon sx={iconStyles} /> : <WomanIcon sx={iconStyles} />}
             </div>
         </div>
     );

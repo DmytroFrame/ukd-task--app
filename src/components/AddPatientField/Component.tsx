@@ -6,10 +6,11 @@ function AddPatientField({ setNewPatientData, newPatientData, onCreatePatientHan
     return (
         <div className={classes['edit-field']}>
             {Object.keys(newPatientData).map((key: string) => {
-                if (key === 'birthDate') {
+                if (key === 'birthday') {
                     return (
                         <Input
                             key={key}
+                            type='date'
                             onChange={(e) =>
                                 setNewPatientData({
                                     ...newPatientData,

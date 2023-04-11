@@ -55,9 +55,9 @@ function PatientsList({ patients, onPatientClickHandler }: IProps): JSX.Element 
                         >
                             <PatientCard
                                 id={patient.id}
-                                name={patient.name}
-                                surname={patient.surname}
-                                birthDate={patient.birthDate}
+                                firstName={patient.firstName}
+                                lastName={patient.lastName}
+                                birthday={patient.birthday}
                                 gender={patient.gender}
                                 country={patient.country}
                                 address={patient.address}

@@ -1,42 +1,33 @@
-import { Timestamp } from 'firebase/firestore';
+// import { Date } from 'firebase/firestore';
 
-export const getDateByDefaultFormat = (date: Timestamp): string => {
+export const getDateByDefaultFormat = (date: string | Date): string => {
     if (!date) {
         return 'Unknown date';
     }
+    date = new Date(date);
 
-    if (!date.toDate) {
-        return 'Invalid date format';
-    }
+    var dateStr =
+        ('00' + (date.getMonth() + 1)).slice(-2) +
+        '.' +
+        ('00' + date.getDate()).slice(-2) +
+        '.' +
+        date.getFullYear() +
+        ' ' +
+        ('00' + date.getHours()).slice(-2) +
+        ':' +
+        ('00' + date.getMinutes()).slice(-2) 
 
-    const inputDate = date.toDate();
-    const yyyy = inputDate.getFullYear();
-    const mm: string = inputDate.toLocaleString('en-us', { month: 'long' }).slice(0, 3);
-    let dd: number | string = inputDate.getDate();
-
-    return `${dd} ${mm}, ${yyyy}`;
+    return dateStr;
 };
 
-export const convertDateToTimestamp = (date: Date): Timestamp => {
-    return Timestamp.fromDate(date);
+export const convertDateToDate = (date: string): Date => {
+    return new Date(date);
 };
 
-export const getAge = (date: Timestamp): string => {
+export const getAge = (date: string): string => {
     if (!date) {
         return 'Unknown';
     }
 
-    if (!date.toDate()) {
-        return 'Invalid date format';
-    }
-
-    const inputDate = date.toDate();
-    const today = new Date();
-    const birthDate = new Date(inputDate);
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-        age--;
-    }
-    return age.toString();
+    return date.toString();
 };
