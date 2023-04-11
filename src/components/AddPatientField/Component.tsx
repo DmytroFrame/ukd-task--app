@@ -10,6 +10,7 @@ function AddPatientField({ setNewPatientData, newPatientData, onCreatePatientHan
                     return (
                         <Input
                             key={key}
+                            type='date'
                             onChange={(e) =>
                                 setNewPatientData({
                                     ...newPatientData,

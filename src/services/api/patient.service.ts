@@ -10,6 +10,11 @@ export class PatientService {
         return await request.json();
     }
 
+    static async getPatient(id: number | undefined): Promise<IPatient> {
+        const request = await fetch(this.path + id);
+        return await request.json();
+    }
+
     static async createPatient(patient: IPatient) {
         try {
             const request = await fetch(this.path, {
@@ -26,11 +31,14 @@ export class PatientService {
     }
 
     static async updatePatient(id: number | undefined, patient: IPatient) {
+        const currentPatient =  await this.getPatient(id);
+        Object.assign (currentPatient, patient)
+        
         if (!id) console.error('No id provided');
 
         const request = await fetch(this.path, {
             method: 'PUT',
-            body: JSON.stringify(patient),
+            body: JSON.stringify(currentPatient),
             headers: this.headers,
         });
 
@@ -41,9 +49,11 @@ export class PatientService {
         if (!id) console.error('No id provided');
 
         try {
-            await fetch(this.path, {
+            const request = await fetch(`${this.path}/${id}`, {
                 method: 'DELETE',
             });
+
+            await request.text();
         } catch (e) {
             console.error('Error removing document: ', e);
         }

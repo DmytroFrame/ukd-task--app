@@ -26,8 +26,9 @@ function PatientNavbar(): JSX.Element {
     }, [selectedPatient]);
 
     const onDeletePatientHandle = async () => {
-        PatientService.deletePatient(patient?.id);
-        fetchPatients();
+        PatientService.deletePatient(patient?.id).then(_ => {
+            fetchPatients();
+        });
     };
 
     return (

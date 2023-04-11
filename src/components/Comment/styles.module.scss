@@ -1,7 +1,12 @@
 .comment {
     &__date {
-        font-size: 1rem;
+        // left: 0;
+        // position: absolute;
+        font-size: 14px;
         font-weight: 800;
+        line-height: 0px;
+        margin-top: 14px;
+        // margin-right: 12px;
     }
 
     padding: 20px;
@@ -12,4 +17,45 @@
         font-weight: normal;
         letter-spacing: 1px;
     }
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: -10px;
+}
+
+.button {
+    display: flex;
+    margin-left: 15px;
+    background-color: #31455c;
+    padding: 4px;
+    font-weight: 400;
+    border-radius: 4px;
+    align-items: center;
+
+    svg {
+        height: 18px;
+    }
+}
+
+.edittext {
+    margin-top: 15px;
+    width: 100%;
+    min-height: 60px;
+    background-color: #31455c;
+    color: white;
+    border: none;
+
+    resize: none;
+
+    // overflow: hidden;
+    outline: none;
+
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+
+    font-weight: normal;
+    letter-spacing: 1px;
 }

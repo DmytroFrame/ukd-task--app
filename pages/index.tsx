@@ -18,7 +18,7 @@ const newPatientDataTemplate = {
     firstName: '',
     lastName: '',
     birthday: '',
-    gender: 'FEMALE',
+    gender: 'MALE',
     country: '',
     state: '',
     address: '',
@@ -27,7 +27,7 @@ const newPatientDataTemplate = {
 
 const editPatientDataTemplate = {
     birthday: '',
-    gender: '',
+    gender: 'MALE',
     country: '',
     state: '',
     address: '',
@@ -70,9 +70,10 @@ const Home: NextPage = () => {
             comments: [],
         };
 
-        PatientService.createPatient(Object.assign(newPatientData, incapsulatedData));
-        fetchPatients();
-        setInformationState('ViewPatient');
+        PatientService.createPatient(Object.assign(newPatientData, incapsulatedData)).then(_ => {
+            fetchPatients();
+            setInformationState('ViewPatient');
+        });
     };
     const onUpdatePatientHandle = (): void => {
         Object.keys(editPatientTemplate).forEach((key) => {
@@ -80,11 +81,11 @@ const Home: NextPage = () => {
                 delete editPatientTemplate[key];
             }
         });
-
-        PatientService.updatePatient(selectedPatient?.id, editPatientTemplate);
-        setInformationState('ViewPatient');
-        setEditPatientTemplate(editPatientDataTemplate);
-        fetchPatients();
+        PatientService.updatePatient(selectedPatient?.id, editPatientTemplate).then(_ => {
+            setInformationState('ViewPatient');
+            setEditPatientTemplate(editPatientDataTemplate);
+            fetchPatients();
+        });
     };
 
     const onSwitchStateToPatientAddHandle = (): void => setInformationState('AddPatient');
@@ -92,7 +93,7 @@ const Home: NextPage = () => {
     return (
         <div className={classes.wrapper}>
             <Head>
-                <title>VITech Med App</title>
+                <title>UKD Task App</title>
             </Head>
 
             <Sidebar

@@ -6,6 +6,7 @@ import { IComment } from '../../interfaces/IPatient.interface';
 import { useContext, useState } from 'react';
 import { InformationContext } from '../../context';
 import { PatientService } from '../../services/api/patient.service';
+import { CommentService } from '../../services/api/comment.service';
 
 const inputStyles = {
     input: { color: '#fff' },
@@ -21,15 +22,10 @@ function PatientJournal() {
 
     const onAddCommentHandle = (): void => {
         if (commentInput.length) {
-            const upd = {
-                ...selectedPatient,
-                comments: [...selectedPatient.comments, { comment: commentInput, date: new Date() }],
-            };
-
-            setCommentInput('');
-
-            PatientService.updatePatient(selectedPatient.id, upd);
-            fetchPatients();
+            CommentService.createComment(selectedPatient.id, commentInput).then(_ => {
+                setCommentInput('');
+                fetchPatients();
+            })
         }
     };
 
@@ -45,6 +41,7 @@ function PatientJournal() {
                                     key={comment.id}
                                     content={comment.text}
                                     date={comment.createdAt}
+                                    id={comment.id}
                                 />
                             ))
                             .reverse()
